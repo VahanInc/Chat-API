@@ -262,6 +262,9 @@ class IqHandler implements Handler
                 $signedPreKeyId = deAdjustId($user->getChild('skey')->getChild('id')->getData());
                 $signedPreKeyPub = new DjbECPublicKey($user->getChild('skey')->getChild('value')->getData());
                 $signedPreKeySig = $user->getChild('skey')->getChild('signature')->getData();
+                if(is_null($user->getChild('key'))) {
+                    throw new \Exception('No key on user', 420);
+                }
                 $preKeyId = deAdjustId($user->getChild('key')->getChild('id')->getData());
                 $preKeyPublic = new DjbECPublicKey($user->getChild('key')->getChild('value')->getData());
 

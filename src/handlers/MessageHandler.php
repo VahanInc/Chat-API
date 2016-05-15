@@ -437,6 +437,41 @@ class MessageHandler implements Handler
             case 'media':
 
               switch ($node->getChild('enc')->getAttribute('mediatype')) {
+                case 'audio':
+                  $audio = new AudioMessage();
+                  $audio->parseFromString($plaintext);
+                  $keys = (new HKDFv3())->deriveSecrets($audio->getRefKey(), hex2bin('576861747341707020417564696f204b657973'), 112);
+                  $iv = substr($keys, 0, 16);
+                  $keys = substr($keys, 16);
+                  $parts = str_split($keys, 32);
+                  $key = $parts[0];
+                  $macKey = $parts[1];
+                  $refKey = $parts[2];
+
+                  $file_enc = file_get_contents($audio->getUrl());
+
+                  $mac = substr($file_enc, -10);
+                  $cipherAudio = substr($file_enc, 0, strlen($file_enc) - 10);
+                  $decrypted_audio = pkcs5_unpad(mcrypt_decrypt(MCRYPT_RIJNDAEL_128, $key, $cipherAudio, MCRYPT_MODE_CBC, $iv));
+
+                  $mimeParts = explode(';', $audio->getMimeType());
+                  $mime = $mimeParts[0];
+                  $codecParts = explode('codecs=', $mimeParts[1]);
+                  $codec = $codecParts[1];
+
+                  $child = new ProtocolNode('media',
+                    [
+                        'size'     => $audio->getLength(),
+                        'seconds'  => $audio->getSeconds(),
+                        'url'      => $audio->getUrl(),
+                        'mimetype' => $mime,
+                        'acodec'   => $codec,
+                        'filehash' => bin2hex($audio->getSha256()),
+                        'file'     => $decrypted_audio ?: $file_enc,
+                        'type'     => 'audio'
+                      ]);
+                  $node->addChild($child);
+                break;
                 case 'image':
                   $image = new ImageMessage();
                   $image->parseFromString($plaintext);

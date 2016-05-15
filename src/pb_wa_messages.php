@@ -268,6 +268,203 @@ class MediaUrl extends \ProtobufMessage
         $this->values[self::TITLE] = $value;
     }
 }
+
+class AudioMessage extends \ProtobufMessage
+{
+    const URL = 1;
+    const MIMETYPE = 2;
+    const SHA256 = 3;
+    const LENGTH = 4;
+    const SECONDS = 5;
+    const PTT = 6;
+    const REFKEY = 7;
+    const KEY = 8;
+    const IV = 9;
+  /* @var array Field descriptors */
+  protected static $fields = [
+      self::URL => [
+          'name'     => 'url',
+          'required' => false,
+          'type'     => 7,
+      ],
+      self::MIMETYPE => [
+          'name'     => 'mimetype',
+          'required' => false,
+          'type'     => 7,
+      ],
+      self::SHA256 => [
+          'name'     => 'sha256',
+          'required' => false,
+          'type'     => 7,
+      ],
+      self::LENGTH => [
+          'name'     => 'length',
+          'required' => false,
+          'type'     => 5,
+      ],
+      self::SECONDS => [
+          'name'     => 'seconds',
+          'required' => false,
+          'type'     => 5,
+      ],
+      self::PTT => [
+          'name'     => 'ptt',
+          'required' => false,
+          'type'     => 5,
+      ],
+      self::REFKEY => [
+          'name'     => 'refkey',
+          'required' => false,
+          'type'     => 7,
+      ],
+      self::KEY => [
+          'name'     => 'key',
+          'required' => false,
+          'type'     => 7,
+      ],
+      self::IV => [
+          'name'     => 'iv',
+          'required' => false,
+          'type'     => 7,
+      ]
+  ];
+
+    public function __construct()
+    {
+        $this->reset();
+    }
+
+  /**
+   * Clears message values and sets default ones.
+   *
+   * @return null
+   */
+  public function reset()
+  {
+      $this->values[self::URL] = null;
+      $this->values[self::MIMETYPE] = null;
+      $this->values[self::SHA256] = null;
+      $this->values[self::LENGTH] = null;
+      $this->values[self::SECONDS] = null;
+      $this->values[self::PTT] = null;
+      $this->values[self::REFKEY] = null;
+      $this->values[self::KEY] = null;
+      $this->values[self::IV] = null;
+  }
+
+  /**
+   * Returns field descriptors.
+   *
+   * @return array
+   */
+  public function fields()
+  {
+      return self::$fields;
+  }
+
+    public function getUrl()
+    {
+        return $this->values[self::URL];
+    }
+
+    public function getMimeType()
+    {
+        return $this->values[self::MIMETYPE];
+    }
+
+    public function getSha256()
+    {
+        return $this->values[self::SHA256];
+    }
+
+    public function getLength()
+    {
+        return $this->values[self::LENGTH];
+    }
+
+    public function getSeconds()
+    {
+      return $this->values[self::SECONDS];
+    }
+
+    public function getPtt()
+    {
+      return $this->values[self::PTT];
+    }
+
+    public function getRefKey()
+    {
+        return $this->values[self::REFKEY];
+    }
+
+    public function getKey()
+    {
+        return $this->values[self::KEY];
+    }
+
+    public function getIv()
+    {
+        return $this->values[self::IV];
+    }
+
+    public function setUrl($newValue)
+    {
+        $this->values[self::URL] = $newValue;
+    }
+
+    public function setMimeType($newValue)
+    {
+        $this->values[self::MIMETYPE] = $newValue;
+    }
+
+    public function setSha256($newValue)
+    {
+        $this->values[self::SHA256] = $newValue;
+    }
+
+    public function setLength($newValue)
+    {
+        $this->values[self::LENGTH] = $newValue;
+    }
+
+    public function setSeconds($newValue)
+    {
+        $this->values[self::SECONDS] = $newValue;
+    }
+
+    public function setPtt($newValue)
+    {
+        $this->values[self::PTT] = $newValue;
+    }
+
+    public function setRefKey($newValue)
+    {
+        $this->values[self::REFKEY] = $newValue;
+    }
+
+    public function setKey($newValue)
+    {
+        $this->values[self::KEY] = $newValue;
+    }
+
+    public function setIv($newValue)
+    {
+        $this->values[self::IV] = $newValue;
+    }
+
+    public function parseFromString($data)
+    {
+        parent::parseFromString($data);
+    }
+
+    public function serializeToString()
+    {
+        $data = parent::serializeToString();
+
+        return $data;
+    }
+}
+
 class ImageMessage extends \ProtobufMessage
 {
     const URL = 1;

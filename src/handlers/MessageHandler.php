@@ -469,7 +469,7 @@ class MessageHandler implements Handler
                         'filehash' => bin2hex($audio->getSha256()),
                         'file'     => $decrypted_audio ?: $file_enc,
                         'type'     => 'audio'
-                      ]);
+                      ], null, $decrypted_audio);
                   $node->addChild($child);
                 break;
                 case 'image':

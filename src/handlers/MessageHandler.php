@@ -437,7 +437,7 @@ class MessageHandler implements Handler
             case 'media':
 
               switch ($node->getChild('enc')->getAttribute('mediatype')) {
-                case 'audio':
+                case 'ptt':
                   $audio = new AudioMessage();
                   $audio->parseFromString($plaintext);
                   $keys = (new HKDFv3())->deriveSecrets($audio->getRefKey(), hex2bin('576861747341707020417564696f204b657973'), 112);

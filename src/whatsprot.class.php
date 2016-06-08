@@ -78,6 +78,8 @@ class WhatsProt
     public $log;
     public $dataFolder;              //
 
+    protected $resetEncryptionCounter = 0;
+
     /**
      * Default class constructor.
      *
@@ -421,15 +423,31 @@ class WhatsProt
         if ($this->axolotlStore) {
             $this->axolotlStore->clear();
         }
+        $this->resetEncryptionCounter += 1;
         $this->retryCounters = [];
         $this->sendSetPreKeys();
         $this->pollMessage();
         $this->pollMessage();
-        $this->disconnect();
-        $this->connect();
-        $this->loginWithPassword($this->password);
-        foreach ($this->retryNodes as $node) {
+        if(1 == $this->resetEncryptionCounter) {
+          $this->disconnect();
+          $this->connect();
+          $this->loginWithPassword($this->password);
+          foreach ($this->retryNodes as $node) {
             $this->processInboundDataNode($node);
+          }
+        } else {
+          $sentTo = [];
+          foreach ($this->retryNodes as $node) {
+            $to = $node->getAttribute('to');
+            if(!$to || isset($sentTo[$to])) {
+              continue;
+            }
+            $this->sendMessage($to, 'I could not understand. Can you please send that again?');
+            while($this->pollMessage());
+            $sentTo[$to] = true;
+            sleep(rand(1,5));
+          }
+          $this->retryNodes = [];
         }
     }
 

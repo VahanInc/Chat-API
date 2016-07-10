@@ -317,19 +317,7 @@ class WhatsProt
             }
         }
         if (time() - $this->timeout > 60) {
-            if ($this->pingCounter >= 3)
-            {
-              $this->sendOfflineStatus();
-              $this->disconnect();
-              $this->iqCounter = 1;
-              $this->connect();
-              $this->loginWithPassword($this->password);
-              $this->pingCounter = 1;
-            }
-            else {
-              $this->sendPing();
-              $this->pingCounter++;
-            }
+            $this->sendPing();
         }
 
         return false;

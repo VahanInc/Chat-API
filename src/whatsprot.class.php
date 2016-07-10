@@ -441,7 +441,7 @@ class WhatsProt
         $this->sendSetPreKeys();
         $this->pollMessage();
         $this->pollMessage();
-        if(1 == $this->resetEncryptionCounter) {
+        if($this->resetEncryptionCounter <= 2) {
           $this->disconnect();
           $this->connect();
           $this->loginWithPassword($this->password);
@@ -455,10 +455,13 @@ class WhatsProt
             if(!$to || isset($sentTo[$to])) {
               continue;
             }
+            $this->sendMessageComposing($to);
+            sleep(2, 5);
+            $this->sendMessagePaused($to);
             $this->sendMessage($to, 'I could not understand. Can you please send that again?');
             while($this->pollMessage());
             $sentTo[$to] = true;
-            sleep(rand(1,5));
+            sleep(rand(1,20));
           }
           $this->retryNodes = [];
         }
